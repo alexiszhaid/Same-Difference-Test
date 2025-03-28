@@ -1,0 +1,121 @@
+---
+title: "Same/Different_Test"
+author: "Alexis Zhaid Carrillo García"
+date: "2025-03-28"
+output: html_document
+bibliography: references.bib
+csl: apa.csl
+---
+# Same/Different Test
+
+The Same/Different test is a discrimination test used to determine whether assessors can detect sensory differences between two products. In each trial, the panelist receives a pair of samples, which may be either identical or different, and must judge whether the two samples are the same or different.
+
+This method is particularly useful when sensory memory may be unreliable, as both samples are presented simultaneously. It is commonly applied in product reformulation, ingredient substitution, or process change studies [@meilgaard2007sensory].
+
+The Same/Different test relies on several key assumptions:
+
+- Binary response: Each assessor must respond either "same" or "different" for each sample pair.
+
+- Chance probability: When unsure, assessors may guess, which introduces a guessing probability that must be accounted for in the statistical analysis.
+
+- Perceptual confusion: A certain proportion of errors can occur even when a difference is present, due to sensory similarity or assessor uncertainty.
+
+## Practical Example
+
+In this example, a total of 200 panelists evaluated 1 sample pair. Each pair consisted either of identical samples (e.g., AA or BB, labeled as "Same") or different samples (e.g., AB or BA, labeled as "Different").
+
+The distribution of responses is summarized in a 2x2 confusion matrix, where the rows represent the panelists' responses and the columns represent the true nature of the sample pairs.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Load necessary libraries
+library(tidyverse)
+library(DT)
+
+set.seed(123)
+
+# Parameters
+n_panelists <- 20
+n_trials <- 10
+
+# Simulate true sample types (50% same, 50% different)
+sample_pairs <- rep(c("Same", "Different"), each = n_trials / 2)
+sample_pairs <- sample(sample_pairs, n_trials, replace = FALSE)
+
+# Simulate panelist responses with some error
+simulate_responses <- function(pair_type) {
+  if (pair_type == "Same") {
+    # 70% correct ("Same"), 30% says "Different"
+    sample(c("Same", "Different"), 1, prob = c(0.7, 0.3))
+  } else {
+    # 75% correct ("Different"), 25% says "Same"
+    sample(c("Different", "Same"), 1, prob = c(0.75, 0.25))
+  }
+}
+
+# Generate data frame
+data <- expand.grid(
+  Panelist = 1:n_panelists,
+  Trial = 1:n_trials
+) %>%
+  mutate(
+    TruePair = rep(sample_pairs, times = n_panelists),
+    Response = map_chr(TruePair, simulate_responses)
+  )
+
+# Create a 2x2 matrix: Rows = responses, Columns = true pair type
+
+conf_matrix <- table(Response = data$Response, TruePair = data$TruePair) %>%
+  as.data.frame.matrix() %>%
+  rownames_to_column("Response")
+
+# Display as interactive table
+datatable(conf_matrix, options = list(dom = 't', paging = FALSE), rownames = FALSE)
+```
+
+## Chi-Square Test of Independence
+The Chi-square test evaluates whether the distribution of responses ("Same" or "Different") is independent of the actual sample pair type. It is based on the 2×2 confusion matrix.
+
+```{r}
+confusion_matrix <- table(Response = data$Response, TruePair = data$TruePair)
+
+chisq.test(confusion_matrix, correct = FALSE)
+```
+
+Since the p-value is less than 0.05, we reject the null hypothesis. This suggests that there is significant association between the type of sample pair received and the panelists’ responses, implying that the panelists were able to discriminate between the samples beyond chance level.
+
+## Using sensR package in a Same/Difference Test
+
+To estimate the sensory discriminability between the sample pairs, we used the samediff() function from the sensR package. This function is based on signal detection theory and allows for direct input of the response frequencies from the confusion matrix [@sensR].
+
+The function requires four counts:
+
+- the number of "same" responses on same pairs,
+
+- the number of "different" responses on same pairs,
+
+- the number of "same" responses on different pairs,
+
+- and the number of "different" responses on different pairs.
+
+```{r, warning=FALSE}
+library(sensR)
+
+model <- samediff(
+  nsamesame = 71,
+  ndiffsame = 29,
+  nsamediff = 21,
+  ndiffdiff = 79
+)
+
+summary(model)
+```
+
+The signal detection model estimated a detectability index (d′) of 2.63 (95% CI: [2.14, 3.12]) and a decision criterion (c) of 1.50 (95% CI: [1.23, 1.78]).
+
+The relatively high d′ value suggests that panelists were clearly able to discriminate between the sample pairs beyond chance level.
+
+The criterion (tau) indicates a moderately conservative response bias, meaning that panelists tended to respond “same” unless they perceived a clear difference.
+
+Both parameters were statistically significant (p < 0.001), confirming the reliability of the estimates.
+
+## References

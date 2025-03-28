@@ -1,0 +1,17 @@
+@book{meilgaard2007sensory,
+  title = {Sensory Evaluation Techniques},
+  author = {Meilgaard, Morten and Civille, Gail Vance and Carr, B. Thomas},
+  year = {2007},
+  edition = {4},
+  publisher = {CRC Press},
+  address = {Boca Raton, FL},
+  isbn = {9780849338397}
+}
+
+@manual{sensR,
+  title = {sensR: Thurstonian Models for Sensory Discrimination Testing},
+  author = {Lars V. Nyholt and Per B. Brockhoff and Christian Ritz},
+  year = {2013},
+  note = {R package version 1.5-0},
+  url = {https://CRAN.R-project.org/package=sensR}
+}
