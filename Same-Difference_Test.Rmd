@@ -1,12 +1,12 @@
 ---
-title: "Same/Different_Test"
+title: "Same/Different and “A”–“Not A” Test"
 author: "Alexis Zhaid Carrillo García"
 date: "2025-03-28"
 output: html_document
 bibliography: references.bib
 csl: apa.csl
 ---
-# Same/Different Test
+# Same/Different and “A”–“Not A” Test
 
 The Same/Different test is a discrimination test used to determine whether assessors can detect sensory differences between two products. In each trial, the panelist receives a pair of samples, which may be either identical or different, and must judge whether the two samples are the same or different.
 
@@ -117,5 +117,29 @@ The relatively high d′ value suggests that panelists were clearly able to disc
 The criterion (tau) indicates a moderately conservative response bias, meaning that panelists tended to respond “same” unless they perceived a clear difference.
 
 Both parameters were statistically significant (p < 0.001), confirming the reliability of the estimates.
+
+# “A”–“Not A” test
+
+Similar to the Same/Different test, the “A”–“Not A” test is a type of sensory discrimination method used to determine whether panelists can distinguish between two stimuli (e.g., treated vs. untreated product) when samples are presented individually. Each judge is asked to classify each sample as either “A” (the reference) or “Not A” (different from the reference).
+
+The results are typically summarized in a 2×2 contingency table and can be analyzed using a chi-squared test. However, the sensR package provides a specific function tailored to this test, allowing for a more robust analysis based on the Thurstonian model.
+
+```{r, warning=FALSE}
+library(sensR)
+
+A_model <- AnotA(
+  x1 = 79,
+  n1 = 100,
+  x2 = 21,
+  n2 = 100
+)
+
+print(A_model)
+```
+
+Although the Same/Different and A–Not A tests can use identical response data organized into a 2×2 table, the results from the sensR functions (samediff() and AnotA()) differ due to their underlying models. The Same/Different model includes a decision uncertainty parameter (tau), accounting for an internal "gray zone" when panelists are unsure. This leads to a higher discriminability estimate (delta). In contrast, the A–Not A model assumes direct binary classification without uncertainty, estimating a lower d-prime (d′). Therefore, even with the same data, d′ and delta will not match.
+
+When to use which test:
+Use the Same/Different test when samples can be presented in pairs and there's a risk of confusion or memory effects—this model handles decision uncertainty explicitly. On the other hand, use the A–Not A test when samples must be presented individually (e.g., shelf-life studies or quality control) or when you want to mimic real-world conditions where the reference is remembered rather than directly compared.
 
 ## References

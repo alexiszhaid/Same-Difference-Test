@@ -13,7 +13,7 @@
 
 <meta name="date" content="2025-03-28" />
 
-<title>Same/Different_Test</title>
+<title>Same/Different and “A”–“Not A” Test</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -2872,15 +2872,15 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Same/Different_Test</h1>
+<h1 class="title toc-ignore">Same/Different and “A”–“Not A” Test</h1>
 <h4 class="author">Alexis Zhaid Carrillo García</h4>
 <h4 class="date">2025-03-28</h4>
 
 </div>
 
 
-<div id="samedifferent-test" class="section level1">
-<h1>Same/Different Test</h1>
+<div id="samedifferent-and-anot-a-test" class="section level1">
+<h1>Same/Different and “A”–“Not A” Test</h1>
 <p>The Same/Different test is a discrimination test used to determine
 whether assessors can detect sensory differences between two products.
 In each trial, the panelist receives a pair of samples, which may be
@@ -2980,6 +2980,52 @@ perceived a clear difference.</p>
 <p>Both parameters were statistically significant (p &lt; 0.001),
 confirming the reliability of the estimates.</p>
 </div>
+</div>
+<div id="anot-a-test" class="section level1">
+<h1>“A”–“Not A” test</h1>
+<p>Similar to the Same/Different test, the “A”–“Not A” test is a type of
+sensory discrimination method used to determine whether panelists can
+distinguish between two stimuli (e.g., treated vs. untreated product)
+when samples are presented individually. Each judge is asked to classify
+each sample as either “A” (the reference) or “Not A” (different from the
+reference).</p>
+<p>The results are typically summarized in a 2×2 contingency table and
+can be analyzed using a chi-squared test. However, the sensR package
+provides a specific function tailored to this test, allowing for a more
+robust analysis based on the Thurstonian model.</p>
+<pre class="r"><code>library(sensR)
+
+A_model &lt;- AnotA(
+  x1 = 79,
+  n1 = 100,
+  x2 = 21,
+  n2 = 100
+)
+
+print(A_model)</code></pre>
+<pre><code>## 
+## Call:  AnotA(x1 = 79, n1 = 100, x2 = 21, n2 = 100) 
+## 
+## Results for the A-Not A test:
+## 
+##         Estimate Std. Error    Lower    Upper      P-value
+## d-prime 1.612842  0.1998675 1.221109 2.004576 4.941986e-17</code></pre>
+<p>Although the Same/Different and A–Not A tests can use identical
+response data organized into a 2×2 table, the results from the sensR
+functions (samediff() and AnotA()) differ due to their underlying
+models. The Same/Different model includes a decision uncertainty
+parameter (tau), accounting for an internal “gray zone” when panelists
+are unsure. This leads to a higher discriminability estimate (delta). In
+contrast, the A–Not A model assumes direct binary classification without
+uncertainty, estimating a lower d-prime (d′). Therefore, even with the
+same data, d′ and delta will not match.</p>
+<p>When to use which test: Use the Same/Different test when samples can
+be presented in pairs and there’s a risk of confusion or memory
+effects—this model handles decision uncertainty explicitly. On the other
+hand, use the A–Not A test when samples must be presented individually
+(e.g., shelf-life studies or quality control) or when you want to mimic
+real-world conditions where the reference is remembered rather than
+directly compared.</p>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
