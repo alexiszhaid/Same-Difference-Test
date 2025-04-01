@@ -32,11 +32,11 @@ The Same/Different test is commonly used in sensory science to determine whether
 - Meilgaard, M., Civille, G. V., & Carr, B. T. (2007). *Sensory Evaluation Techniques* (4th ed.). CRC Press.
 - Nyholt, L. V., Brockhoff, P. B., & Ritz, C. (2013). *sensR: Thurstonian Models for Sensory Discrimination Testing*. R package version 1.5-0.
 
-## 📬 Contact
+## 📩 Contact If you have questions, suggestions, or want to collaborate on the book project, feel free to reach out:
 
-For questions, collaborations, or feedback, feel free to reach out:
-
-- 📧 Email: [alexiszcg@gmail.com]  
-- 💼 LinkedIn: [https://www.linkedin.com/in/alexis-zhaid-carrillo-garc%C3%ADa-2b01ba205/]
+- 📧 Email: alexiszcg@gmail.com  
+- 🧠 GitHub: [@alexiszhaid](https://github.com/alexiszhaid)  
+- 📘 LinkedIn: [Alexis Zhaid](https://www.linkedin.com/in/alexis-zhaid-carrillo-garc%C3%ADa-2b01ba205/)  
+- 📍 Location: Mexico
 
 ---
